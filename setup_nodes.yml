@@ -1,0 +1,22 @@
+#
+---
+  - name: "Install cri-o on all nodes for: {{ project_tag }}"
+    hosts: aws_ec2
+    roles:
+    - role: crio
+      become: yes
+  
+  - name: "Install desired things for Crane hacking"
+    hosts: role_Worker
+    roles:
+    - role: crane_hack
+      # intended to run as 'centos' user, so no on 'become'
+      become: no 
+
+  - name: "Install minkube and related utilities"
+    hosts: role_Worker
+    roles:
+    - role: minikube
+      # intended to run as 'centos' user, so no on 'become'
+      become: no 
+  

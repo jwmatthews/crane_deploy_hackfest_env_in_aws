@@ -1,0 +1,29 @@
+my_name: jwm_tmp
+project_tag: "{{ my_name }}_crane_hackfest"
+
+region_name: "us-east-1"
+key_name: '{{ project_tag }}_keypair'
+ec2_ssh_key_file_path: "./keys/{{ project_tag }}_{{ region_name }}.pem"
+ansible_ssh_private_key_file: "{{ ec2_ssh_key_file_path }}"
+
+#instance_type: 't2.xlarge'
+instance_type: 't2.large'
+
+# VPC
+vpc_cidr: 10.10.0.0/24
+vpc_name: "{{ project_tag }} VPC"
+ 
+# Subnet
+subnet_name: "{{ project_tag }} Subnet"
+subnet_cidr: 10.10.0.0/26
+ 
+# Internet Gateway Name
+igw_name: "{{ project_tag }} Traffic IGW"
+
+route_name: "{{ project_tag }} Route"
+ 
+security_group_name: "{{ project_tag }} Ansible Security Group"
+security_group_description: "{{ security_group_name }}"
+
+local_kube_config: "{{ project_tag }}_kubeconfig"
+kubeadm_join_command_filename: "kubeadm_join_command.txt"
