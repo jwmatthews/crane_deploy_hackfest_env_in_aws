@@ -23,8 +23,6 @@
     - jq
   become: yes
 
-# Add to path
-
 - git:
     repo: 'https://github.com/konveyor/hackfest.git'
     dest: "{{ user_home.stdout }}/hackfest"
@@ -41,4 +39,22 @@
     repo: 'https://github.com/konveyor/crane-documentation.git'
     dest: "{{ user_home.stdout }}/src/crane-documentation"
 
-    
+- file:
+    src: "{{ item.path }}"
+    dest: "{{ item.dest }}"
+    state: link
+  with_items:
+    - { path: "{{ user_home.stdout }}/src/crane/hack/minikube-clusters-start.sh", dest: "{{ user_home.stdout }}/minikube-clusters-start.sh" }
+    - { path: "{{ user_home.stdout }}/src/crane/hack/minikube-clusters-delete.sh", dest: "{{ user_home.stdout }}/minikube-clusters-delete.sh" }
+
+- name: Download crane binary
+  get_url:
+    url: https://github.com/konveyor/crane/releases/download/v0.0.3/amd64-linux-crane-v0.0.3
+    dest: "{{ user_home.stdout }}/bin/crane"
+    mode: '0777'
+
+- name: Run minikube-clusters-start.sh
+  command: "./minikube-clusters-start.sh"
+  args:
+    chdir: "{{ user_home.stdout }}"
+

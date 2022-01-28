@@ -10,6 +10,11 @@
           region: "{{ region_name }}"
       register: ec2_key_result
 
+    - name: Ensure directory exists for {{ ec2_ssh_key_dir }}
+      file:
+        path: "{{ ec2_ssh_key_dir }}"
+        state: directory
+
     - name: Save private key for '{{ key_name }}' to '{{ ec2_ssh_key_file_path }}'
       copy: content="{{ ec2_key_result.key.private_key }}" dest="{{ ec2_ssh_key_file_path }}" mode=0600
       when: ec2_key_result.changed
@@ -113,27 +118,7 @@
             volume_size: 250
             delete_on_termination: true
         tags:
-          Name: "{{ project_tag }}_{{ item.name }}"
+          Name: "{{ project_tag }}_node{{ item }}"
           Role: "Worker"
       register: ec2_inst_worker
-      loop:
-        - { name: 'node1' }
-        - { name: 'node2' }
-        - { name: 'node3' }
-        #- { name: 'node4' }
-        #- { name: 'node5' }
-        #- { name: 'node6' }
-        #- { name: 'node7' }
-        #- { name: 'node8' }
-        #- { name: 'node9' }
-        #- { name: 'node10' }
-        #- { name: 'node11' }
-        #- { name: 'node12' }
-        #- { name: 'node13' }
-        #- { name: 'node14' }
-        #- { name: 'node15' }
-        #- { name: 'node16' }
-        #- { name: 'node17' }
-        #- { name: 'node18' }
-        #- { name: 'node19' }
-        #- { name: 'node20' }
+      with_sequence: start=1 end={{ desired_num_instances }}

@@ -6,6 +6,13 @@
     - role: crio
       become: yes
   
+  - name: "Install minkube and related utilities"
+    hosts: role_Worker
+    roles:
+    - role: minikube
+      # intended to run as 'centos' user, so no on 'become'
+      become: no 
+  
   - name: "Install desired things for Crane hacking"
     hosts: role_Worker
     roles:
@@ -13,10 +20,4 @@
       # intended to run as 'centos' user, so no on 'become'
       become: no 
 
-  - name: "Install minkube and related utilities"
-    hosts: role_Worker
-    roles:
-    - role: minikube
-      # intended to run as 'centos' user, so no on 'become'
-      become: no 
   
