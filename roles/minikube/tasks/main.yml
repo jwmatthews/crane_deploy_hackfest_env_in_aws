@@ -9,6 +9,7 @@
     - podman
     - curl 
     - conntrack
+    - git
   become: yes
 
 - name: get user home directory
@@ -69,20 +70,27 @@
     dest: "{{ user_home.stdout }}/bin/krew"
     state: link
 
-- name: Install krew
-  command: "krew install krew"
-
 - name: Update users $PATH
   ansible.builtin.lineinfile:
     path: "{{ user_home.stdout }}/.bashrc"
     line: "PATH=$PATH:~/bin:~/.krew/bin"
     create: yes
 
-- name: krew install ctx 
-  command: "krew install ctx"
+# Note, git needs to be installed prior
+- name: Install krew
+  command: "krew install krew"
+  args:
+    creates: "{{ user_home.stdout }}/.krew/bin/kubectl-krew"
 
-- name: krew install  ns
+- name: krew install kubectx 
+  command: "krew install ctx"
+  args:
+    creates: "{{ user_home.stdout }}/.krew/bin/kubectl-ctx"
+
+- name: krew install kubens
   command: "krew install ns"
+  args:
+    creates: "{{ user_home.stdout }}/.krew/bin/kubectl-ns"
 
 - name: Update minikube config to use podman as default driver  
   command: "minikube config set driver podman"

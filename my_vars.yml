@@ -2,7 +2,7 @@ my_name: jwm_tmp
 project_tag: "{{ my_name }}_crane_hackfest"
 
 # How many instances do we want to provision
-desired_num_instances: 2
+desired_num_instances: 10
 
 region_name: "us-east-1"
 key_name: '{{ project_tag }}_keypair'
@@ -28,6 +28,3 @@ route_name: "{{ project_tag }} Route"
  
 security_group_name: "{{ project_tag }} Ansible Security Group"
 security_group_description: "{{ security_group_name }}"
-
-local_kube_config: "{{ project_tag }}_kubeconfig"
-kubeadm_join_command_filename: "kubeadm_join_command.txt"
