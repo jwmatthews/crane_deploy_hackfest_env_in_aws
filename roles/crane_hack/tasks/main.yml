@@ -21,6 +21,7 @@
     - vim
     - git  
     - jq
+    - tree
   become: yes
 
 - git:
