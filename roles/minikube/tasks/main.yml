@@ -52,15 +52,39 @@
     dest: "{{ user_home.stdout }}/bin"
     remote_src: yes
 
-- name: Add "{{ user_home.stdout }}/bin" to users $PATH.
+- name: Download krew
+  get_url:
+    url: https://github.com/kubernetes-sigs/krew/releases/download/v0.4.2/krew-linux_amd64.tar.gz
+    dest: "{{ user_home.stdout }}/bin/krew-linux_amd64.tar.gz"
+    mode: '0666'
+
+- name: Unarchive krew-linux_amd64.tar.gz download
+  ansible.builtin.unarchive:
+    src: "{{ user_home.stdout }}/bin/krew-linux_amd64.tar.gz"
+    dest: "{{ user_home.stdout }}/bin"
+    remote_src: yes
+
+- file:
+    src: "{{ user_home.stdout }}/bin/krew-linux_amd64"
+    dest: "{{ user_home.stdout }}/bin/krew"
+    state: link
+
+- name: Install krew
+  command: "krew install krew"
+
+- name: Update users $PATH
   ansible.builtin.lineinfile:
     path: "{{ user_home.stdout }}/.bashrc"
-    line: "PATH=$PATH:~/bin"
+    line: "PATH=$PATH:~/bin:~/.krew/bin"
     create: yes
 
+- name: krew install ctx 
+  command: "krew install ctx"
+
+- name: krew install  ns
+  command: "krew install ns"
+
 - name: Update minikube config to use podman as default driver  
-  command: "./minikube config set driver podman"
-  args:
-    chdir: "{{ user_home.stdout }}/bin"
+  command: "minikube config set driver podman"
 
 

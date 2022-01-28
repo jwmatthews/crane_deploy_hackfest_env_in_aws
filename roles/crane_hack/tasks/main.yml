@@ -57,4 +57,5 @@
   command: "./minikube-clusters-start.sh"
   args:
     chdir: "{{ user_home.stdout }}"
+    creates: "{{ user_home.stdout }}/.minikube/profiles/src/config.json"
 
