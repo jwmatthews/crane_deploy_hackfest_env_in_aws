@@ -6,6 +6,7 @@
 
 import json
 import gspread
+import sys
 from oauth2client.service_account import ServiceAccountCredentials
 
 url = "https://docs.google.com/spreadsheets/d/1l9gT1ewSZ2bcm3IxjDBve5BOnjsXMAUn1CxIgFhqgDA/edit#gid=0"
@@ -29,6 +30,11 @@ import json
 inventoryfile = open('inventory.json' , 'r')
 rawdata = inventoryfile.read()
 inv_json = json.loads(rawdata)
+
+
+if "aws_ec2" not in inv_json:
+    print("Please check inventory, don't see hosts under 'aws_ec2'")
+    sys.exit(1)
 
 index = 2
 for host in inv_json["aws_ec2"]["hosts"]:

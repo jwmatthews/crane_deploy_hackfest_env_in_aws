@@ -2,7 +2,12 @@ my_name: jwm_tmp
 project_tag: "{{ my_name }}_crane_hackfest"
 
 # How many instances do we want to provision
-desired_num_instances: 10
+desired_num_instances: 20
+
+# You can ignore below and leave as-is, unless you are creating many instances
+# I've observed bad performance trying to create 40 instances at a time (~6 hours)
+# Create/Setup of 20 instances is ~ <30 mins, so batching creation and changing batch name below to help
+batch_name: batch1
 
 region_name: "us-east-1"
 key_name: '{{ project_tag }}_keypair'

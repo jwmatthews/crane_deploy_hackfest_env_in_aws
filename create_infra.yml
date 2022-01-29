@@ -118,7 +118,7 @@
             volume_size: 250
             delete_on_termination: true
         tags:
-          Name: "{{ project_tag }}_node{{ item }}"
-          Role: "Worker"
+          Name: "{{ project_tag }}_{{ batch_name }}_node{{ item }}"
+          Role: "{{ batch_name }}"
       register: ec2_inst_worker
       with_sequence: start=1 end={{ desired_num_instances }}

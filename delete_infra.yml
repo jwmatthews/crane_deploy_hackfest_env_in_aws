@@ -14,7 +14,6 @@
         region: "{{ region_name }}"
         filters:
           tag:Name: "{{ project_tag }}*"
-          tag:Role: "Worker"
         state: "absent"
       register: ec2_inst_workers    
     - debug:
